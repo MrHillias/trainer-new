@@ -1,8 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
-const sequelize = require("./utils/db_launch");
-const User = require("./models/User");
+const sequelize = require("./Utils/db_launch");
+const User = require("./Models/User");
 
 // Определение окружения и загрузка соответствующего .env
 const envFile = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : ".env";
@@ -20,6 +20,10 @@ app.post("/register", async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+});
+
+app.get("/", (req, res) => {
+  res.send("Фудж, соси хуец");
 });
 
 // Запуск сервера
