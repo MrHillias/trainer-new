@@ -18,7 +18,33 @@ const sequelize = new Sequelize(
     host: process.env.DB_HOST,
     dialect: "postgres",
     logging: process.env.NODE_ENV === "development" ? console.log : false,
+    dialectOptions: {
+      connectTimeout: 10000, // Тайм-аут подключения (10 сек)
+    },
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000,
+    },
   }
 );
+
+async function initDB() {
+  try {
+    console.log("🔄 Попытка подключения к базе данных...");
+    await sequelize.authenticate();
+    console.log("✅ База данных успешно подключена!");
+
+    console.log("🔄 Синхронизация базы данных...");
+    await sequelize.sync();
+    console.log("✅ Синхронизация завершена!");
+  } catch (err) {
+    console.error("❌ Ошибка при работе с базой данных:", err);
+    process.exit(1); // Завершаем процесс при ошибке
+  }
+}
+
+initDB();
 
 module.exports = sequelize;

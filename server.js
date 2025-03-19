@@ -1,17 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const dotenv = require("dotenv");
 const sequelize = require("./Utils/db_launch");
 const User = require("./Models/User");
-
-// Определение окружения и загрузка соответствующего .env
-const envFile = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : ".env";
-dotenv.config({ path: `./env/${envFile}` });
 
 const app = express();
 app.use(bodyParser.json());
 
-// Пример маршрута регистрации
 app.post("/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -22,19 +16,15 @@ app.post("/register", async (req, res) => {
   }
 });
 
-app.get("/", (req, res) => {
-  res.send("Фудж, соси хуец");
-});
-
-// Запуск сервера
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, async () => {
-  try {
-    await sequelize.authenticate();
-    console.log(
-      `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`
-    );
-  } catch (error) {
-    console.error("Database connection error:", error);
-  }
-});
+// Ждем подключения к БД перед запуском сервера
+sequelize
+  .authenticate()
+  .then(() => {
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+      console.log(`🚀 Сервер запущен успешно на порту ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("❌ Сервер не запущен из-за ошибки БД:", err);
+  });
