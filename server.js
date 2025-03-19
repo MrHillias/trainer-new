@@ -1,22 +1,26 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const sequelize = require("./Utils/db_launch"); // Просто импортируем, он сам подключается
-const User = require("./Models/User");
+const dotenv = require("dotenv");
+const sequelize = require("./Utils/db_launch");
+
+// Загружаем переменные окружения
+const envFile = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : ".env";
+dotenv.config({ path: `./env/${envFile}` });
 
 const app = express();
 app.use(bodyParser.json());
 
-app.post("/register", async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
-    const user = await User.create({ name, email, password });
-    res.status(201).json(user);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+// Подключаем API маршруты
+const registerRouter = require("./API/register");
+app.use("/api", registerRouter); // Теперь /register будет доступен через /api/register
+
+// Обработка GET-запроса к корневому маршруту
+app.get("/", (req, res) => {
+  res.send("Фудж, соси новый хуец");
 });
 
+// Запуск сервера
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Сервер запущен на порту ${PORT}`);
+  console.log(`Сервер запущен успешно на порту ${PORT}`);
 });
