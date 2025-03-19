@@ -19,7 +19,7 @@ const sequelize = new Sequelize(
     dialect: "postgres",
     logging: process.env.NODE_ENV === "development" ? console.log : false,
     dialectOptions: {
-      connectTimeout: 10000, // Тайм-аут подключения (10 сек)
+      connectTimeout: 10000, // 10 секунд тайм-аут
     },
     pool: {
       max: 5,
@@ -32,19 +32,20 @@ const sequelize = new Sequelize(
 
 async function initDB() {
   try {
-    console.log("🔄 Попытка подключения к базе данных...");
+    console.log("Попытка подключения к базе данных...");
     await sequelize.authenticate();
-    console.log("✅ База данных успешно подключена!");
+    console.log("База данных успешно подключена!");
 
-    console.log("🔄 Синхронизация базы данных...");
+    console.log("Синхронизация базы данных...");
     await sequelize.sync();
-    console.log("✅ Синхронизация завершена!");
+    console.log("Синхронизация завершена!");
   } catch (err) {
-    console.error("❌ Ошибка при работе с базой данных:", err);
-    process.exit(1); // Завершаем процесс при ошибке
+    console.error("Ошибка при работе с базой данных:", err);
+    process.exit(1);
   }
 }
 
+// Вызываем `initDB()` один раз при старте
 initDB();
 
 module.exports = sequelize;

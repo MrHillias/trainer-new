@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const sequelize = require("./Utils/db_launch");
+const sequelize = require("./Utils/db_launch"); // Просто импортируем, он сам подключается
 const User = require("./Models/User");
 
 const app = express();
@@ -16,15 +16,7 @@ app.post("/register", async (req, res) => {
   }
 });
 
-// Ждем подключения к БД перед запуском сервера
-sequelize
-  .authenticate()
-  .then(() => {
-    const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => {
-      console.log(`🚀 Сервер запущен успешно на порту ${PORT}`);
-    });
-  })
-  .catch((err) => {
-    console.error("❌ Сервер не запущен из-за ошибки БД:", err);
-  });
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`🚀 Сервер запущен на порту ${PORT}`);
+});
