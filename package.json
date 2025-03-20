@@ -13,6 +13,8 @@
   "description": "",
   "dependencies": {
     "body-parser": "^1.20.3",
+    "docker": "^1.0.0",
+    "docker-compose": "^1.2.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "pg": "^8.14.1",

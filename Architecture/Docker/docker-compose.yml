@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Architecture/Docker/Dockerfile
+    container_name: my_trainer_app
+    ports:
+      - "3000:3000"
+    env_file:
+      - ../../env/.env.production
+    depends_on:
+      - db
+    networks:
+      - my_network
+
+  db:
+    image: postgres:15
+    container_name: my_postgres_db
+    restart: always
+    env_file:
+      - ../../env/.env.production
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - my_network
+
+volumes:
+  postgres_data:
+
+networks:
+  my_network:
