@@ -17,12 +17,15 @@ router.post("/", async (req, res) => {
 
     // Создаем пользователя с токеном подтверждения
     const confirmationToken = uuidv4();
-    const newUser = await User.create({
-      name,
-      email,
-      password,
-      confirmationToken,
-    });
+    const newUser = await User.create(
+      {
+        name,
+        email,
+        password,
+        confirmationToken,
+      },
+      { fields: ["name", "email", "password", "confirmationToken"] }
+    );
 
     // Отправляем письмо с подтверждением
     const confirmLink = `${process.env.APP_URL}/confirm/${confirmationToken}`;
