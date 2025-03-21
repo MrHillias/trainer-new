@@ -14,6 +14,13 @@ app.use(bodyParser.json());
 app.use("/api/register", require("./API/register"));
 app.use("/api/confirm", require("./API/confirm"));
 
+//Настройка путей
+const authRoutes = require("./routes/auth");
+const userRoutes = require("./routes/user");
+
+app.use("/auth", authRoutes);
+app.use("/user", userRoutes);
+
 // Обработка GET-запроса к корневому маршруту
 app.get("/", (req, res) => {
   res.send("Фудж, соси новый хуец");

@@ -1,0 +1,18 @@
+const express = require("express");
+const { User } = require("../models");
+const authMiddleware = require("../Middleware/authMiddleware");
+
+const router = express.Router();
+
+router.get("/profile", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findByPk(req.user.id, {
+      attributes: ["name", "email"],
+    });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+module.exports = router;
