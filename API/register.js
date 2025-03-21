@@ -3,7 +3,7 @@ const { v4: uuidv4 } = require("uuid");
 const User = require("../Models/User");
 const transporter = require("../Utils/mailer");
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
+require("dotenv").config({ path: "env/.env" });
 
 const router = express.Router();
 
