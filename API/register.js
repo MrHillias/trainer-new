@@ -26,7 +26,7 @@ router.post("/", async (req, res) => {
     });
 
     // Генерируем ссылку для подтверждения email
-    const confirmLink = `${process.env.APP_URL}/confirm/${confirmationToken}`;
+    const confirmLink = `${process.env.APP_URL}/api/confirm/${confirmationToken}`;
 
     res.status(201).json({
       message: "Регистрация успешна! Подтвердите email по ссылке.",
