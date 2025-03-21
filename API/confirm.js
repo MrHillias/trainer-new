@@ -3,7 +3,7 @@ const User = require("../Models/User");
 
 const router = express.Router();
 
-router.get("/confirm/:token", async (req, res) => {
+router.get("/:token", async (req, res) => {
   try {
     const { token } = req.params;
     const user = await User.findOne({ where: { confirmationToken: token } });
