@@ -11,8 +11,8 @@ console.log("MAIL_PASSWORD:", process.env.MAIL_PASSWORD ? "****" : "NOT SET");
     console.log("Создаю транспорт...");
     let transporter = nodemailer.createTransport({
       host: process.env.MAIL_HOST,
-      port: process.env.MAIL_PORT,
-      secure: true, // Yahoo требует secure = true для 465
+      port: 587, // Меняем на 587
+      secure: false, // Важно! Для 587 должно быть false
       auth: {
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASSWORD,
