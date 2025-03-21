@@ -22,6 +22,8 @@ router.post("/", async (req, res) => {
     // Генерируем ссылку для подтверждения email
     const confirmLink = `${process.env.APP_URL}/confirm/${confirmationToken}`;
 
+    console.log("JWT_SECRET:", process.env.JWT_SECRET);
+
     // Создаем JWT-токен
     const token = jwt.sign({ id: newUser.id, email }, process.env.JWT_SECRET, {
       expiresIn: "7d",
