@@ -15,8 +15,8 @@ app.use("/api/register", require("./API/register"));
 app.use("/api/confirm", require("./API/confirm"));
 
 //Настройка путей
-const authRoutes = require("./routes/auth");
-const userRoutes = require("./routes/user");
+const authRoutes = require("./Routes/auth");
+const userRoutes = require("./Routes/user");
 
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
