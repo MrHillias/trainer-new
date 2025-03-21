@@ -1,6 +1,11 @@
 const nodemailer = require("nodemailer");
 require("dotenv").config({ path: "env/.env.mail" });
 
+console.log("MAIL_HOST:", process.env.MAIL_HOST);
+console.log("MAIL_PORT:", process.env.MAIL_PORT);
+console.log("MAIL_USER:", process.env.MAIL_USER);
+console.log("MAIL_PASSWORD:", process.env.MAIL_PASSWORD ? "****" : "NOT SET");
+
 async function testSMTP() {
   const transporter = nodemailer.createTransport({
     host: process.env.MAIL_HOST,
