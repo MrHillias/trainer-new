@@ -35,11 +35,9 @@ router.post("/", async (req, res) => {
              <a href="${confirmLink}">${confirmLink}</a>`,
     });
 
-    res
-      .status(201)
-      .json({
-        message: "Регистрация успешна! Проверьте вашу почту для подтверждения.",
-      });
+    res.status(201).json({
+      message: "Регистрация успешна! Проверьте вашу почту для подтверждения.",
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

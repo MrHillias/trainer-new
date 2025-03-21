@@ -4,9 +4,10 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.addColumn("Users", "confirmationToken", {
+      // Убрал ошибочный двоеточие
       type: Sequelize.UUID,
-      allowNull: false,
-      defaultValue: Sequelize.literal("uuid_generate_v4()"), // Генерация UUID
+      defaultValue: Sequelize.UUIDV4,
+      allowNull: true,
     });
   },
 
