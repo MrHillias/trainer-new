@@ -9,7 +9,15 @@
     "migrate:dev": "cross-env NODE_ENV=development npx sequelize-cli db:migrate --config=Utils/sequelize-config.js",
     "migrate:test": "cross-env NODE_ENV=test npx sequelize-cli db:migrate --config=Utils/sequelize-config.js",
     "migrate:prod": "cross-env NODE_ENV=production npx sequelize-cli db:migrate --config=Utils/sequelize-config.js",
-    "migrate:all": "npm run migrate:dev && npm run migrate:test && npm run migrate:prod"
+    "migrate:all": "npm run migrate:dev && npm run migrate:test && npm run migrate:prod",
+    "migrate:undo:dev": "cross-env NODE_ENV=development npx sequelize-cli db:migrate:undo --config=Utils/sequelize-config.js",
+    "migrate:undo:test": "cross-env NODE_ENV=test npx sequelize-cli db:migrate:undo --config=Utils/sequelize-config.js",
+    "migrate:undo:prod": "cross-env NODE_ENV=production npx sequelize-cli db:migrate:undo --config=Utils/sequelize-config.js",
+    "migrate:undo:all": "npm run migrate:undo:dev && npm run migrate:undo:test && npm run migrate:undo:prod",
+    "migrate:reset:dev": "cross-env NODE_ENV=development npx sequelize-cli db:migrate:undo:all --config=Utils/sequelize-config.js",
+    "migrate:reset:test": "cross-env NODE_ENV=test npx sequelize-cli db:migrate:undo:all --config=Utils/sequelize-config.js",
+    "migrate:reset:prod": "cross-env NODE_ENV=production npx sequelize-cli db:migrate:undo:all --config=Utils/sequelize-config.js",
+    "migrate:reset:all": "npm run migrate:reset:dev && npm run migrate:reset:test && npm run migrate:reset:prod"
   },
   "keywords": [],
   "author": "",
