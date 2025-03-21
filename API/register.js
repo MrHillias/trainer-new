@@ -28,18 +28,33 @@ router.post("/", async (req, res) => {
     // Генерируем ссылку для подтверждения email
     const confirmLink = `${process.env.APP_URL}/confirm/${confirmationToken}`;
 
-    // Создаем JWT-токен
-    const token = jwt.sign({ id: newUser.id, email }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
-
     res.status(201).json({
-      message: "Регистрация успешна!",
-      confirmLink,
-      token,
+      message: "Регистрация успешна! Подтвердите email по ссылке.",
+      confirmLink, // Пока просто возвращаем ссылку, позже можно заменить на email-отправку
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+router.get("/check-email", async (req, res) => {
+  const { email } = req.body; // Извлекаем email из тела запроса
+
+  if (!email) {
+    return res.status(400).json({ message: "Email is required" });
+  }
+
+  try {
+    const user = await User.findOne({ where: { email } });
+
+    if (user) {
+      return res.json({ exists: true, message: "Email уже используется" });
+    } else {
+      return res.json({ exists: false, message: "Email доступен" });
+    }
+  } catch (error) {
+    console.error("Ошибка при проверке email:", error);
+    res.status(500).json({ message: "Ошибка сервера" });
   }
 });
 

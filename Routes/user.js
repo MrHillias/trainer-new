@@ -7,7 +7,7 @@ const router = express.Router();
 router.get("/profile", authMiddleware, async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id, {
-      attributes: ["id", "name", "email", "isConfirmed"],
+      attributes: { exclude: ["password"] },
     });
 
     if (!user) {
