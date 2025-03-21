@@ -1,3 +1,10 @@
+# Файлы конфигурации и чувствительные данные
+.env
+.env.*
+/config/config.json
+/sequelize.log
+
+# Директории с временными данными
 node_modules/
-env*
 postgres_data/
+logs/

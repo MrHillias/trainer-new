@@ -11,8 +11,8 @@ const app = express();
 app.use(bodyParser.json());
 
 // Подключаем API маршруты
-const registerRouter = require("./API/register");
-app.use("/api", registerRouter); // Теперь /register будет доступен через /api/register
+app.use("/api/register", require("./API/register"));
+app.use("/api/confirm", require("./API/confirm"));
 
 // Обработка GET-запроса к корневому маршруту
 app.get("/", (req, res) => {
