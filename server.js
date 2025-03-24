@@ -18,8 +18,8 @@ app.use("/api/confirm", require("./API/confirm"));
 const authRoutes = require("./Routes/auth");
 const userRoutes = require("./Routes/user");
 
-app.use("/auth", authRoutes);
-app.use("/user", userRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
 
 // Обработка GET-запроса к корневому маршруту
 app.get("/", (req, res) => {
