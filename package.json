@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "NODE_ENV=production node server.js",
-    "dev": "NODE_ENV=development nodemon server.js",
-    "test": "NODE_ENV=test jest",
+    "start": "cross-env NODE_ENV=production node server.js",
+    "dev": "cross-env NODE_ENV=development nodemon server.js",
+    "test": "cross-env NODE_ENV=test jest",
     "migrate:dev": "cross-env NODE_ENV=development npx sequelize-cli db:migrate --config=Utils/sequelize-config.js",
     "migrate:test": "cross-env NODE_ENV=test npx sequelize-cli db:migrate --config=Utils/sequelize-config.js",
     "migrate:prod": "cross-env NODE_ENV=production npx sequelize-cli db:migrate --config=Utils/sequelize-config.js",
@@ -29,6 +29,7 @@
     "docker-compose": "^1.2.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "nodemailer": "^6.10.0",
     "pg": "^8.14.1",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.6"
