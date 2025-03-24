@@ -38,7 +38,7 @@ router.post("/", async (req, res) => {
 });
 
 router.get("/check-email", async (req, res) => {
-  const { email } = req.body; // Извлекаем email из тела запроса
+  const { email } = req.query; // Извлекаем email из строки запроса
 
   if (!email) {
     return res.status(400).json({ message: "Email is required" });
