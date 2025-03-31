@@ -11,6 +11,7 @@ console.log("DB Config:", {
   password: process.env.DB_PASSWORD ? "HIDDEN" : "MISSING",
 });
 
+// Подключение к основной базе данных
 const sequelize = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,
@@ -70,11 +71,19 @@ async function initDB() {
   try {
     console.log("Попытка подключения к базе данных...");
     await sequelize.authenticate();
-    console.log("База данных успешно подключена!");
+    console.log("Основная база данных успешно подключена!");
 
-    console.log("Синхронизация базы данных...");
+    console.log("Синхронизация основной базы данных...");
     await sequelize.sync();
-    console.log("Синхронизация завершена!");
+    console.log("Синхронизация основной базы данных завершена!");
+
+    console.log("Попытка подключения ко второй базе данных...");
+    await tasksDB.authenticate();
+    console.log("База данных задач успешно подключена!");
+
+    console.log("Синхронизация базы данных задач...");
+    await tasksDB.sync();
+    console.log("Синхронизация базы данных задач завершена!");
   } catch (err) {
     console.error("Ошибка при работе с базой данных:", err);
     process.exit(1);
@@ -84,4 +93,5 @@ async function initDB() {
 // Вызываем `initDB()` один раз при старте
 initDB();
 
-module.exports = sequelize;
+// Экспортируем оба подключения
+module.exports = { sequelize, tasksDB };

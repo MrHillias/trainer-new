@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const { tasksDB } = require("../db_launch");
+const { tasksDB } = require("../Utils/db_launch");
 
 const Task = tasksDB.define(
   "Task",
@@ -23,5 +23,3 @@ const Task = tasksDB.define(
 );
 
 module.exports = Task;
-
-module.exports = User;
