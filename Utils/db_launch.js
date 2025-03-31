@@ -33,7 +33,9 @@ const sequelize = new Sequelize(
 );
 
 // Подключение ко второй базе данных (tasksDB)
-require("dotenv").config({ path: __dirname + "/../env/.env.tasks" });
+require("dotenv").config({
+  path: __dirname + `/../env/.env.tasks`,
+});
 
 console.log("Tasks DB Config:", {
   host: process.env.TASKS_DB_HOST,
