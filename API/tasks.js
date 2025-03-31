@@ -12,15 +12,14 @@ router.get("/tables", async (req, res) => {
       "SELECT table_name FROM information_schema.tables WHERE table_schema='public';",
       { type: QueryTypes.SELECT }
     );
+
     // Извлекаем только названия таблиц
     const tableNames = tables.map((table) => table.table_name);
 
     console.log("Tables:", tableNames);
 
-    // Отправляем ответ
+    // Отправляем ответ с названиями таблиц
     res.json({ tableNames });
-    // Возвращаем таблицы в ответе
-    res.json({ tables });
   } catch (error) {
     console.error("Ошибка при получении списка таблиц:", error);
     res.status(500).json({ error: "Ошибка сервера" });
