@@ -37,7 +37,7 @@ router.get("/table/:tableName", async (req, res) => {
   try {
     const [data] = await tasksDB.query(`SELECT * FROM "${tableName}"`);
 
-    res.json({ table: tableName, data });
+    res.json(data);
   } catch (error) {
     console.error(
       `Ошибка при получении данных из таблицы ${tableName}:`,
