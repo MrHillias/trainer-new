@@ -21,7 +21,7 @@ router.get("/tables", async (req, res) => {
     console.log("Tables:", tableNames); // Выводим только названия таблиц
 
     // Отправляем ответ с названиями таблиц
-    res.json({ tableNames });
+    res.json(tableNames);
   } catch (error) {
     console.error("Ошибка при получении списка таблиц:", error);
     res.status(500).json({ error: "Ошибка сервера" });
