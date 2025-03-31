@@ -17,9 +17,11 @@ app.use("/api/confirm", require("./API/confirm"));
 //Настройка путей
 const authRoutes = require("./Routes/auth");
 const userRoutes = require("./Routes/user");
+const tasksRoutes = require("./routes/tasks");
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/tasks", tasksRoutes);
 
 // Обработка GET-запроса к корневому маршруту
 app.get("/", (req, res) => {
