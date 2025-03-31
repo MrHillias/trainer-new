@@ -38,20 +38,20 @@ require("dotenv").config({
 });
 
 console.log("Tasks DB Config:", {
-  host: process.env.DB_HOST,
-  name: process.env.DB_NAME,
-  user: process.env.DB_USER,
-  port: process.env.DB_PORT,
-  password: process.env.DB_PASSWORD ? "HIDDEN" : "MISSING",
+  host: process.env.TASKS_DB_HOST,
+  name: process.env.TASKS_DB_NAME,
+  user: process.env.TASKS_DB_USER,
+  port: process.env.TASKS_DB_PORT,
+  password: process.env.TASKS_DB_PASSWORD ? "HIDDEN" : "MISSING",
 });
 
 const tasksDB = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
+  process.env.TASKS_DB_NAME,
+  process.env.TASKS_DB_USER,
+  process.env.TASKS_DB_PASSWORD,
   {
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
+    host: process.env.TASKS_DB_HOST,
+    port: process.env.TASKS_DB_PORT,
     dialect: "postgres",
     logging: process.env.NODE_ENV === "development" ? console.log : false,
     dialectOptions: {
