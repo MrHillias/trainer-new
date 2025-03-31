@@ -8,11 +8,15 @@ const router = express.Router();
  */
 router.get("/tables", async (req, res) => {
   try {
-    const [tables] = await tasksDB.query(
+    const [tables, metadata] = await tasksDB.query(
       "SELECT table_name FROM information_schema.tables WHERE table_schema='public';"
     );
 
-    res.json({ tables: tables.map((t) => t.table_name) });
+    // Выводим результат
+    console.log("Tables:", tables);
+
+    // Возвращаем таблицы в ответе
+    res.json({ tables });
   } catch (error) {
     console.error("Ошибка при получении списка таблиц:", error);
     res.status(500).json({ error: "Ошибка сервера" });
