@@ -8,11 +8,10 @@ const router = express.Router();
  */
 router.get("/tables", async (req, res) => {
   try {
-    const [tables, metadata] = await tasksDB.query(
-      "SELECT table_name FROM information_schema.tables WHERE table_schema='public';"
+    const tables = await tasksDB.query(
+      "SELECT table_name FROM information_schema.tables WHERE table_schema='public';",
+      { type: QueryTypes.SELECT }
     );
-
-    // Выводим результат
     console.log("Tables:", tables);
 
     // Возвращаем таблицы в ответе
