@@ -13,10 +13,12 @@ router.get("/tables", async (req, res) => {
       { type: QueryTypes.SELECT }
     );
 
+    console.log("Raw tables response:", tables); // Выводим всю структуру данных
+
     // Извлекаем только названия таблиц
     const tableNames = tables.map((table) => table.table_name);
 
-    console.log("Tables:", tableNames); // Для дебага
+    console.log("Tables:", tableNames); // Выводим только названия таблиц
 
     // Отправляем ответ с названиями таблиц
     res.json({ tableNames });
