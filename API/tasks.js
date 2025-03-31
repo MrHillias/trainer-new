@@ -16,7 +16,7 @@ router.get("/tables", async (req, res) => {
     // Извлекаем только названия таблиц
     const tableNames = tables.map((table) => table.table_name);
 
-    console.log("Tables:", tableNames);
+    console.log("Tables:", tableNames); // Для дебага
 
     // Отправляем ответ с названиями таблиц
     res.json({ tableNames });
