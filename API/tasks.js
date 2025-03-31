@@ -1,6 +1,6 @@
 const express = require("express");
 const { tasksDB } = require("../Utils/db_launch");
-
+const { QueryTypes } = require("sequelize");
 const router = express.Router();
 
 /**
