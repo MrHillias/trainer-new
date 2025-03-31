@@ -15,8 +15,8 @@ router.get("/tables", async (req, res) => {
 
     console.log("Raw tables response:", tables); // Выводим всю структуру данных
 
-    // Извлекаем только названия таблиц
-    const tableNames = tables.map((table) => table.table_name);
+    // Извлекаем названия таблиц из первого элемента каждого массива
+    const tableNames = tables.map((table) => table[0]);
 
     console.log("Tables:", tableNames); // Выводим только названия таблиц
 
