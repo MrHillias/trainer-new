@@ -14,12 +14,11 @@ router.get("/tables", async (req, res) => {
       { type: QueryTypes.SELECT }
     );
 
-    // Логируем, какие данные получены
+    // Логируем, какие данные пришли
     console.log("Raw tables response:", tables);
 
-    // Извлекаем имена таблиц
-    const tableNames = tables.map((table) => table.table_name).filter(Boolean);
-
+    // Извлекаем только названия таблиц
+    const tableNames = tables.map((table) => table[0]).filter(Boolean);
     console.log("Extracted table names:", tableNames);
 
     if (tableNames.length === 0) {
@@ -37,16 +36,19 @@ router.get("/tables", async (req, res) => {
       return result[0]?.count || 0;
     };
 
-    // Объект для маппинга title и description
+    // Объект для маппинга title и description (можно заменить на запрос к БД)
     const tableDescriptions = {
-      users: {
-        title: "Пользователи",
-        description: "Список зарегистрированных пользователей",
+      rests: {
+        title: "Rest интеграции",
+        description: "Апишка",
       },
-      tasks: { title: "Задачи", description: "База данных с задачами" },
-      results: {
-        title: "Результаты",
-        description: "Хранение результатов выполнения",
+      messageBrockers: {
+        title: "Брокеры сообщений",
+        description: "Брокер",
+      },
+      demands: {
+        title: "Виды требований",
+        description: "Фудж",
       },
     };
 
