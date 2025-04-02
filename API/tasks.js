@@ -14,30 +14,39 @@ router.get("/tables", async (req, res) => {
       { type: QueryTypes.SELECT }
     );
 
-    const tableNames = tables.map((table) => table.table_name);
+    // Логируем, какие данные получены
+    console.log("Raw tables response:", tables);
+
+    // Извлекаем имена таблиц
+    const tableNames = tables.map((table) => table.table_name).filter(Boolean);
+
+    console.log("Extracted table names:", tableNames);
+
+    if (tableNames.length === 0) {
+      return res.status(404).json({ error: "Таблицы не найдены" });
+    }
 
     // Функция для получения количества записей в таблице
     const getTableCount = async (tableName) => {
+      console.log(`Counting records in table: ${tableName}`);
       const result = await tasksDB.query(
         `SELECT COUNT(*) FROM "${tableName}";`,
         { type: QueryTypes.SELECT }
       );
-      return result[0].count || 0;
+      console.log(`Count for ${tableName}:`, result);
+      return result[0]?.count || 0;
     };
 
-    // Объект для маппинга title и description (можно заменить на запрос к БД)
+    // Объект для маппинга title и description
     const tableDescriptions = {
-      rests: {
-        title: "Rest интеграции",
-        description: "Апишка",
+      users: {
+        title: "Пользователи",
+        description: "Список зарегистрированных пользователей",
       },
-      messageBrockers: {
-        title: "Брокеры сообщений",
-        description: "Брокер",
-      },
-      demands: {
-        title: "Виды требований",
-        description: "Фудж",
+      tasks: { title: "Задачи", description: "База данных с задачами" },
+      results: {
+        title: "Результаты",
+        description: "Хранение результатов выполнения",
       },
     };
 
