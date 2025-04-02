@@ -8,20 +8,55 @@ const router = express.Router();
  */
 router.get("/tables", async (req, res) => {
   try {
+    // Получаем список таблиц
     const tables = await tasksDB.query(
       "SELECT table_name FROM information_schema.tables WHERE table_schema='public';",
       { type: QueryTypes.SELECT }
     );
 
-    console.log("Raw tables response:", tables); // Выводим всю структуру данных
+    const tableNames = tables.map((table) => table.table_name);
 
-    // Извлекаем названия таблиц из первого элемента каждого массива
-    const tableNames = tables.map((table) => table[0]);
+    // Функция для получения количества записей в таблице
+    const getTableCount = async (tableName) => {
+      const result = await tasksDB.query(
+        `SELECT COUNT(*) FROM "${tableName}";`,
+        { type: QueryTypes.SELECT }
+      );
+      return result[0].count || 0;
+    };
 
-    console.log("Tables:", tableNames); // Выводим только названия таблиц
+    // Объект для маппинга title и description (можно заменить на запрос к БД)
+    const tableDescriptions = {
+      rests: {
+        title: "Rest интеграции",
+        description: "Апишка",
+      },
+      messageBrockers: {
+        title: "Брокеры сообщений",
+        description: "Брокер",
+      },
+      demands: {
+        title: "Виды требований",
+        description: "Фудж",
+      },
+    };
 
-    // Отправляем ответ с названиями таблиц
-    res.json(tableNames);
+    // Формируем JSON-ответ
+    const response = await Promise.all(
+      tableNames.map(async (tableName, index) => {
+        const count = await getTableCount(tableName);
+        return {
+          id: index + 1,
+          type: tableName,
+          title: tableDescriptions[tableName]?.title || "Неизвестная таблица",
+          description:
+            tableDescriptions[tableName]?.description || "Описание отсутствует",
+          exercises: count,
+        };
+      })
+    );
+
+    res.json(response);
   } catch (error) {
     console.error("Ошибка при получении списка таблиц:", error);
     res.status(500).json({ error: "Ошибка сервера" });
