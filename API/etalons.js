@@ -83,3 +83,5 @@ router.get("/users/:id", async (req, res) => {
       .json({ error: "Ошибка при получении данных о пользователе" });
   }
 });
+
+module.exports = router;
