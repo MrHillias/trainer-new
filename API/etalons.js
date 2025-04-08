@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 
 const SomeBook = require("../Models/SomeBooks");
-const SomeFlight = require("../Models/someFlights");
-const SomeUser = require("../Models/someUsers");
+const SomeFlight = require("../Models/SomeFlights");
+const SomeUser = require("../Models/SomeUsers");
 
 // GET: Получить все книги
 router.get("/books", async (req, res) => {

@@ -18,12 +18,12 @@ app.use("/api/confirm", require("./API/confirm"));
 const authRoutes = require("./Routes/auth");
 const userRoutes = require("./Routes/user");
 const tasksRoutes = require("./API/tasks");
-const tasksetalons = require("./API/etalons");
+const tasksEtalons = require("./API/etalons");
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/tasks", tasksRoutes);
-app.use("/api/etalons", tasksetalons);
+app.use("/api/etalons", tasksEtalons);
 
 // Обработка GET-запроса к корневому маршруту
 app.get("/", (req, res) => {
