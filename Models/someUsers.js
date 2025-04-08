@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 const { etalonDB } = require("../Utils/db_launch");
 
 const someUsers = etalonDB.define("someUsers", {
-  тame: {
+  name: {
     type: DataTypes.STRING,
     allowNull: false, // Обязательно для заполнения
   },

@@ -6,6 +6,10 @@ const someFlights = etalonDB.define("someFlights", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  airline: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   departureTime: {
     type: DataTypes.DATE,
     allowNull: false,
@@ -14,11 +18,11 @@ const someFlights = etalonDB.define("someFlights", {
     type: DataTypes.DATE,
     allowNull: false,
   },
-  origin: {
+  origidepartureAirport: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  destination: {
+  arrivalAirport: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -26,8 +30,12 @@ const someFlights = etalonDB.define("someFlights", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  airline: {
+  gate: {
     type: DataTypes.STRING,
+    allowNull: false,
+  },
+  duration: {
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
 });
