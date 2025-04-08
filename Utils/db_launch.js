@@ -73,20 +73,20 @@ require("dotenv").config({
 });
 
 console.log("Tasks DB Etalon:", {
-  host: process.env.TASKS_DB_HOST,
-  name: process.env.TASKS_DB_NAME,
-  user: process.env.TASKS_DB_USER,
-  port: process.env.TASKS_DB_PORT,
-  password: process.env.TASKS_DB_PASSWORD ? "HIDDEN" : "MISSING",
+  host: process.env.ETALON_DB_HOST, // Параметры для базы данных эталонов
+  name: process.env.ETALON_DB_NAME,
+  user: process.env.ETALON_DB_USER,
+  port: process.env.ETALON_DB_PORT,
+  password: process.env.ETALON_DB_PASSWORD ? "HIDDEN" : "MISSING",
 });
 
 const etalonDB = new Sequelize(
-  process.env.TASKS_DB_NAME,
-  process.env.TASKS_DB_USER,
-  process.env.TASKS_DB_PASSWORD,
+  process.env.ETALON_DB_NAME, // Использование переменных из .env.etalon
+  process.env.ETALON_DB_USER,
+  process.env.ETALON_DB_PASSWORD,
   {
-    host: process.env.TASKS_DB_HOST,
-    port: process.env.TASKS_DB_PORT,
+    host: process.env.ETALON_DB_HOST,
+    port: process.env.ETALON_DB_PORT,
     dialect: "postgres",
     logging: process.env.NODE_ENV === "development" ? console.log : false,
     dialectOptions: {
