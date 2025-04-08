@@ -18,7 +18,7 @@ const someFlights = etalonDB.define("someFlights", {
     type: DataTypes.DATE,
     allowNull: false,
   },
-  origidepartureAirport: {
+  departureAirport: {
     type: DataTypes.STRING,
     allowNull: false,
   },
