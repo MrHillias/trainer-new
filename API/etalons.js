@@ -61,11 +61,12 @@ router.get("/books/:id", async (req, res) => {
 });
 
 // GET: Посчитать количество отфильтрованных книг
+// GET: Посчитать количество отфильтрованных книг
 router.get("/books/count", async (req, res) => {
+  console.log("Запрос:", req.query); // Выведет все параметры запроса
+
   try {
     const filters = {}; // Собираем фильтры так же, как в /books
-
-    console.log("Запрос:", req.query); // Логируем запрос для диагностики
 
     if (req.query.price) filters.price = parseFloat(req.query.price); // Преобразуем цену в число
     if (req.query.author) filters.author = req.query.author;
@@ -78,7 +79,7 @@ router.get("/books/count", async (req, res) => {
     const count = await SomeBook.count({ where: filters });
     res.json({ count });
   } catch (error) {
-    console.error("Ошибка при подсчёте книг:");
+    console.error("Ошибка при подсчёте книг:", error); // Логирование ошибки
     res.status(500).json({ error: "Ошибка при подсчёте книг" });
   }
 });
