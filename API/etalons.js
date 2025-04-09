@@ -60,6 +60,25 @@ router.get("/books/:id", async (req, res) => {
   }
 });
 
+// GET: Посчитать количество отфильтрованных книг
+router.get("/books/count", async (req, res) => {
+  try {
+    const filters = {}; // Собираем фильтры так же, как в /books
+    const { author, genre, year, language } = req.query;
+
+    if (author) filters.author = author;
+    if (genre) filters.genre = genre;
+    if (year) filters.year = year;
+    if (language) filters.language = language;
+
+    const count = await SomeBook.count({ where: filters });
+    res.json({ count });
+  } catch (error) {
+    console.error("Ошибка при подсчёте книг:", error);
+    res.status(500).json({ error: "Ошибка при подсчёте книг" });
+  }
+});
+
 // GET: Получить все рейсы
 router.get("/flights", async (req, res) => {
   try {

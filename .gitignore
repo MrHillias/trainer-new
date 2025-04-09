@@ -3,9 +3,10 @@
 .env.*
 /config/config.json
 /sequelize.log
-testBook.js
+/Utils/etalonArrays.js
 
 # Директории с временными данными
 node_modules/
 postgres_data/
 logs/
+Generate/
