@@ -71,6 +71,8 @@ router.get("/books/count", async (req, res) => {
     if (year) filters.year = year;
     if (language) filters.language = language;
 
+    console.log("Фильтры для запроса:", filters); // Логируем фильтры
+
     const count = await SomeBook.count({ where: filters });
     res.json({ count });
   } catch (error) {
