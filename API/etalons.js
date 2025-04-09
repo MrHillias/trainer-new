@@ -8,8 +8,37 @@ const SomeUser = require("../Models/SomeUsers");
 // GET: Получить все книги
 router.get("/books", async (req, res) => {
   try {
-    const books = await SomeBook.findAll(); // Получаем все записи из таблицы SomeBook
-    res.json(books); // Отправляем их в ответе
+    const {
+      author,
+      genre,
+      price,
+      availability,
+      year,
+      rating_gte,
+      rating_lte,
+      language,
+    } = req.query;
+
+    const filters = {};
+
+    if (author) filters.author = author;
+    if (genre) filters.genre = genre;
+    if (price) filters.price = price;
+    if (availability) filters.availability = availability;
+    if (year) filters.year = year;
+    if (language) filters.language = language;
+
+    if (rating_gte || rating_lte) {
+      filters.rating = {};
+      if (rating_gte) filters.rating[Op.gte] = parseFloat(rating_gte);
+      if (rating_lte) filters.rating[Op.lte] = parseFloat(rating_lte);
+    }
+
+    const books = await SomeBook.findAll({
+      where: filters,
+    });
+
+    res.json(books);
   } catch (error) {
     console.error("Ошибка при получении книг:", error);
     res.status(500).json({ error: "Ошибка при получении данных о книгах" });
@@ -27,53 +56,6 @@ router.get("/books/:id", async (req, res) => {
   } catch (error) {
     console.error("Ошибка при получении книги:", error);
     res.status(500).json({ error: "Ошибка при получении данных о книге" });
-  }
-});
-
-// GET: Получить книги с фильтрацией
-router.get("/books", async (req, res) => {
-  try {
-    const filters = {};
-    const {
-      titleWords,
-      author,
-      genre,
-      price,
-      availability,
-      year,
-      rating_gte,
-      rating_lte,
-      language,
-    } = req.query;
-
-    if (titleWords) {
-      filters.title = {
-        [Op.and]: Sequelize.literal(
-          `array_length(string_to_array(title, ' '), 1) = ${parseInt(
-            titleWords
-          )}`
-        ),
-      };
-    }
-
-    if (author) filters.author = author;
-    if (genre) filters.genre = genre;
-    if (price) filters.price = price;
-    if (availability) filters.availability = availability;
-    if (year) filters.year = year;
-    if (language) filters.language = language;
-
-    if (rating_gte || rating_lte) {
-      filters.rating = {};
-      if (rating_gte) filters.rating[Op.gte] = parseFloat(rating_gte);
-      if (rating_lte) filters.rating[Op.lte] = parseFloat(rating_lte);
-    }
-
-    const books = await SomeBook.findAll({ where: filters });
-    res.json(books);
-  } catch (error) {
-    console.error("Ошибка при фильтрации книг:", error);
-    res.status(500).json({ error: "Ошибка при фильтрации книг" });
   }
 });
 
