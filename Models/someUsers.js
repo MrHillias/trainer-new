@@ -6,7 +6,7 @@ const someUsers = etalonDB.define("someUsers", {
     type: DataTypes.STRING,
     allowNull: false, // Обязательно для заполнения
   },
-  lastтame: {
+  lastname: {
     type: DataTypes.STRING,
     allowNull: false, // Обязательно для заполнения
   },

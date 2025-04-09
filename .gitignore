@@ -3,6 +3,7 @@
 .env.*
 /config/config.json
 /sequelize.log
+testBook.js
 
 # Директории с временными данными
 node_modules/
