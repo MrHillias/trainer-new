@@ -64,12 +64,12 @@ router.get("/books/:id", async (req, res) => {
 router.get("/books/count", async (req, res) => {
   try {
     const filters = {}; // Собираем фильтры так же, как в /books
-    const { author, genre, year, language } = req.query;
 
-    if (author) filters.author = author;
-    if (genre) filters.genre = genre;
-    if (year) filters.year = year;
-    if (language) filters.language = language;
+    if (req.query.price) filters.price = parseFloat(req.query.price); // Преобразуем цену в число
+    if (req.query.author) filters.author = req.query.author;
+    if (req.query.genre) filters.genre = req.query.genre;
+    if (req.query.year) filters.year = parseInt(req.query.year, 10); // Преобразуем год в число
+    if (req.query.language) filters.language = req.query.language;
 
     console.log("Фильтры для запроса:", filters); // Логируем фильтры
 
