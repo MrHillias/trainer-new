@@ -46,21 +46,6 @@ router.get("/books", async (req, res) => {
   }
 });
 
-// GET: Получить книгу по ID
-router.get("/books/:id", async (req, res) => {
-  try {
-    const book = await SomeBook.findByPk(req.params.id); // Ищем книгу по ID
-    if (!book) {
-      return res.status(404).json({ error: "Книга не найдена" });
-    }
-    res.json(book); // Отправляем книгу в ответе
-  } catch (error) {
-    console.error("Ошибка при получении книги:", error);
-    res.status(500).json({ error: "Ошибка при получении данных о книге" });
-  }
-});
-
-// GET: Посчитать количество отфильтрованных книг
 // GET: Посчитать количество отфильтрованных книг
 router.get("/books/count", async (req, res) => {
   console.log("Запрос:", req.query); // Выведет все параметры запроса
@@ -81,6 +66,20 @@ router.get("/books/count", async (req, res) => {
   } catch (error) {
     console.error("Ошибка при подсчёте книг:", error); // Логирование ошибки
     res.status(500).json({ error: "Ошибка при подсчёте книг" });
+  }
+});
+
+// GET: Получить книгу по ID
+router.get("/books/:id", async (req, res) => {
+  try {
+    const book = await SomeBook.findByPk(req.params.id); // Ищем книгу по ID
+    if (!book) {
+      return res.status(404).json({ error: "Книга не найдена" });
+    }
+    res.json(book); // Отправляем книгу в ответе
+  } catch (error) {
+    console.error("Ошибка при получении книги:", error);
+    res.status(500).json({ error: "Ошибка при получении данных о книге" });
   }
 });
 
