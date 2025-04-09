@@ -76,7 +76,7 @@ router.get("/books/count", async (req, res) => {
     const count = await SomeBook.count({ where: filters });
     res.json({ count });
   } catch (error) {
-    console.error("Ошибка при подсчёте книг:", error);
+    console.error("Ошибка при подсчёте книг:");
     res.status(500).json({ error: "Ошибка при подсчёте книг" });
   }
 });
