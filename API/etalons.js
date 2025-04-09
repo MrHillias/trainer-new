@@ -65,6 +65,8 @@ router.get("/books/count", async (req, res) => {
   try {
     const filters = {}; // Собираем фильтры так же, как в /books
 
+    console.log("Запрос:", req.query); // Логируем запрос для диагностики
+
     if (req.query.price) filters.price = parseFloat(req.query.price); // Преобразуем цену в число
     if (req.query.author) filters.author = req.query.author;
     if (req.query.genre) filters.genre = req.query.genre;
