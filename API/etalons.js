@@ -6,43 +6,28 @@ const SomeBook = require("../Models/SomeBooks");
 const SomeFlight = require("../Models/SomeFlights");
 const SomeUser = require("../Models/SomeUsers");
 
-// GET: Получить все книги
-router.get("/books", async (req, res) => {
+// GET: Поиск книг по части строки (в авторе или названии)
+router.get("/books/search", async (req, res) => {
   try {
-    const {
-      author,
-      genre,
-      price,
-      availability,
-      year,
-      rating_gte,
-      rating_lte,
-      language,
-    } = req.query;
+    const { query } = req.query;
 
-    const filters = {};
-
-    if (author) filters.author = author;
-    if (genre) filters.genre = genre;
-    if (price) filters.price = price;
-    if (availability) filters.availability = availability;
-    if (year) filters.year = year;
-    if (language) filters.language = language;
-
-    if (rating_gte || rating_lte) {
-      filters.rating = {};
-      if (rating_gte) filters.rating[Op.gte] = parseFloat(rating_gte);
-      if (rating_lte) filters.rating[Op.lte] = parseFloat(rating_lte);
+    if (!query) {
+      return res.status(400).json({ error: "Не указана строка поиска" });
     }
 
     const books = await SomeBook.findAll({
-      where: filters,
+      where: {
+        [Op.or]: [
+          { title: { [Op.iLike]: `%${query}%` } },
+          { author: { [Op.iLike]: `%${query}%` } },
+        ],
+      },
     });
 
     res.json(books);
   } catch (error) {
-    console.error("Ошибка при получении книг:", error);
-    res.status(500).json({ error: "Ошибка при получении данных о книгах" });
+    console.error("Ошибка при поиске книг:", error);
+    res.status(500).json({ error: "Ошибка при поиске книг" });
   }
 });
 
@@ -80,6 +65,46 @@ router.get("/books/:id", async (req, res) => {
   } catch (error) {
     console.error("Ошибка при получении книги:", error);
     res.status(500).json({ error: "Ошибка при получении данных о книге" });
+  }
+});
+
+// GET: Получить все книги
+router.get("/books", async (req, res) => {
+  try {
+    const {
+      author,
+      genre,
+      price,
+      availability,
+      year,
+      rating_gte,
+      rating_lte,
+      language,
+    } = req.query;
+
+    const filters = {};
+
+    if (author) filters.author = author;
+    if (genre) filters.genre = genre;
+    if (price) filters.price = price;
+    if (availability) filters.availability = availability;
+    if (year) filters.year = year;
+    if (language) filters.language = language;
+
+    if (rating_gte || rating_lte) {
+      filters.rating = {};
+      if (rating_gte) filters.rating[Op.gte] = parseFloat(rating_gte);
+      if (rating_lte) filters.rating[Op.lte] = parseFloat(rating_lte);
+    }
+
+    const books = await SomeBook.findAll({
+      where: filters,
+    });
+
+    res.json(books);
+  } catch (error) {
+    console.error("Ошибка при получении книг:", error);
+    res.status(500).json({ error: "Ошибка при получении данных о книгах" });
   }
 });
 
