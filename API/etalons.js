@@ -80,10 +80,13 @@ router.get("/books", async (req, res) => {
       rating_gte,
       rating_lte,
       language,
+      sortField,
+      sortOrder,
     } = req.query;
 
     const filters = {};
 
+    // Применяем фильтры
     if (author) filters.author = author;
     if (genre) filters.genre = genre;
     if (price) filters.price = price;
@@ -97,8 +100,20 @@ router.get("/books", async (req, res) => {
       if (rating_lte) filters.rating[Op.lte] = parseFloat(rating_lte);
     }
 
+    // Настройка сортировки, если параметры присутствуют
+    const order = [];
+    if (sortField && sortOrder) {
+      const validFields = ["title", "author", "price", "year", "rating"];
+      const validOrders = ["asc", "desc"];
+
+      if (validFields.includes(sortField) && validOrders.includes(sortOrder)) {
+        order.push([sortField, sortOrder]);
+      }
+    }
+
     const books = await SomeBook.findAll({
       where: filters,
+      order: order,
     });
 
     res.json(books);
