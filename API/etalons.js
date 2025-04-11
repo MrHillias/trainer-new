@@ -60,18 +60,24 @@ router.get("/books/:id?", async (req, res) => {
     const { id } = req.params; // Параметр :id
 
     if (id) {
-      // Если передан id, получаем книгу по этому ID
-      const bookId = parseInt(id, 10); // Преобразуем id в число
-      if (isNaN(bookId)) {
-        return res.status(400).json({ error: "Invalid book ID" });
+      // Если передан id, получаем книги по этим ID
+      const bookIds = id.split(",").map((id) => parseInt(id, 10)); // Разделяем на массив и преобразуем в числа
+      if (bookIds.some((id) => isNaN(id))) {
+        return res.status(400).json({ error: "Invalid book ID(s)" });
       }
 
-      const book = await SomeBook.findByPk(bookId); // Ищем книгу по ID
-      if (!book) {
-        return res.status(404).json({ error: "Книга не найдена" });
+      // Ищем книги по множеству ID
+      const books = await SomeBook.findAll({
+        where: {
+          id: bookIds, // Используем оператор IN
+        },
+      });
+
+      if (books.length === 0) {
+        return res.status(404).json({ error: "Книги не найдены" });
       }
 
-      return res.json(book); // Отправляем книгу в ответе
+      return res.json(books); // Отправляем книги в ответе
     }
 
     // Если id нет, получаем все книги с фильтрами и сортировкой
