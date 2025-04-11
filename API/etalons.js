@@ -54,23 +54,27 @@ router.get("/books/count", async (req, res) => {
   }
 });
 
-// GET: Получить книгу по ID
-router.get("/books/:id", async (req, res) => {
+// GET: Получить книгу по ID или все книги
+router.get("/books/:id?", async (req, res) => {
   try {
-    const book = await SomeBook.findByPk(req.params.id); // Ищем книгу по ID
-    if (!book) {
-      return res.status(404).json({ error: "Книга не найдена" });
-    }
-    res.json(book); // Отправляем книгу в ответе
-  } catch (error) {
-    console.error("Ошибка при получении книги:", error);
-    res.status(500).json({ error: "Ошибка при получении данных о книге" });
-  }
-});
+    const { id } = req.params; // Параметр :id
 
-// GET: Получить все книги
-router.get("/books", async (req, res) => {
-  try {
+    if (id) {
+      // Если передан id, получаем книгу по этому ID
+      const bookId = parseInt(id, 10); // Преобразуем id в число
+      if (isNaN(bookId)) {
+        return res.status(400).json({ error: "Invalid book ID" });
+      }
+
+      const book = await SomeBook.findByPk(bookId); // Ищем книгу по ID
+      if (!book) {
+        return res.status(404).json({ error: "Книга не найдена" });
+      }
+
+      return res.json(book); // Отправляем книгу в ответе
+    }
+
+    // Если id нет, получаем все книги с фильтрами и сортировкой
     const {
       author,
       genre,
