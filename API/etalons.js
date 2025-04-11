@@ -55,13 +55,13 @@ router.get("/books/count", async (req, res) => {
 });
 
 // GET: Получить книгу по ID или все книги
-router.get("/books/:id?", async (req, res) => {
+router.get("/books", async (req, res) => {
   try {
-    const { id } = req.params; // Параметр :id
+    const { id } = req.query; // Параметр id из query string
 
     if (id) {
-      // Если передан id, получаем книги по этим ID
-      const bookIds = id.split(",").map((id) => parseInt(id, 10)); // Разделяем на массив и преобразуем в числа
+      // Если передан параметр id, получаем книги по этим ID
+      const bookIds = id.split(",").map((id) => parseInt(id, 10)); // Разделяем строку на массив чисел
       if (bookIds.some((id) => isNaN(id))) {
         return res.status(400).json({ error: "Invalid book ID(s)" });
       }
