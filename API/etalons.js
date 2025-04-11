@@ -80,8 +80,8 @@ router.get("/books", async (req, res) => {
       rating_gte,
       rating_lte,
       language,
-      sortField,
-      sortOrder,
+      sortField, // Параметры сортировки
+      sortOrder, // Параметры сортировки
     } = req.query;
 
     const filters = {};
@@ -89,9 +89,9 @@ router.get("/books", async (req, res) => {
     // Применяем фильтры
     if (author) filters.author = author;
     if (genre) filters.genre = genre;
-    if (price) filters.price = price;
+    if (price) filters.price = parseFloat(price); // Преобразуем в число
     if (availability) filters.availability = availability;
-    if (year) filters.year = year;
+    if (year) filters.year = parseInt(year, 10); // Преобразуем в целое число
     if (language) filters.language = language;
 
     if (rating_gte || rating_lte) {
@@ -100,7 +100,7 @@ router.get("/books", async (req, res) => {
       if (rating_lte) filters.rating[Op.lte] = parseFloat(rating_lte);
     }
 
-    // Настройка сортировки, если параметры присутствуют
+    // Проверка и настройка сортировки
     const order = [];
     if (sortField && sortOrder) {
       const validFields = ["title", "author", "price", "year", "rating"];
@@ -108,12 +108,14 @@ router.get("/books", async (req, res) => {
 
       if (validFields.includes(sortField) && validOrders.includes(sortOrder)) {
         order.push([sortField, sortOrder]);
+      } else {
+        return res.status(400).json({ error: "Invalid sort parameters" }); // Возвращаем ошибку при неверных параметрах сортировки
       }
     }
 
     const books = await SomeBook.findAll({
       where: filters,
-      order: order,
+      order: order, // Добавляем сортировку в запрос
     });
 
     res.json(books);
