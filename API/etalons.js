@@ -38,11 +38,26 @@ router.get("/books/count", async (req, res) => {
   try {
     const filters = {}; // Собираем фильтры так же, как в /books
 
+    // Преобразуем параметры, если они присутствуют в запросе
     if (req.query.price) filters.price = parseFloat(req.query.price); // Преобразуем цену в число
     if (req.query.author) filters.author = req.query.author;
     if (req.query.genre) filters.genre = req.query.genre;
     if (req.query.year) filters.year = parseInt(req.query.year, 10); // Преобразуем год в число
     if (req.query.language) filters.language = req.query.language;
+
+    // Добавляем фильтры для рейтинга, если параметры присутствуют
+    if (req.query.rating_gte) {
+      filters.rating = {
+        ...filters.rating,
+        [Op.gte]: parseFloat(req.query.rating_gte),
+      };
+    }
+    if (req.query.rating_lte) {
+      filters.rating = {
+        ...filters.rating,
+        [Op.lte]: parseFloat(req.query.rating_lte),
+      };
+    }
 
     console.log("Фильтры для запроса:", filters); // Логируем фильтры
 
