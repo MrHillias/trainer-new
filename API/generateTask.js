@@ -1,4 +1,4 @@
-import express from "express";
+const express = require("express");
 import generateRandomTask from "../Generate/generator.js";
 
 const router = express.Router();
