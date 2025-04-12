@@ -1,5 +1,5 @@
 const express = require("express");
-import generateRandomTask from "../Generate/generator.js";
+const generateRandomTask = require("../Generate/generator.js");
 
 const router = express.Router();
 
