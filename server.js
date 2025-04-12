@@ -19,11 +19,13 @@ const authRoutes = require("./Routes/auth");
 const userRoutes = require("./Routes/user");
 const tasksRoutes = require("./API/tasks");
 const tasksEtalons = require("./API/etalons");
+const tasksGenerator = require("./API/generateTask");
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/tasks", tasksRoutes);
 app.use("/api/etalons", tasksEtalons);
+app.use("/api/generateSimpleREST", tasksGenerator);
 
 // Обработка GET-запроса к корневому маршруту
 app.get("/", (req, res) => {
