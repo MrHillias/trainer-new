@@ -1,7 +1,6 @@
 const express = require("express");
-const generateRandomTask = require("../Generate/generator.js");
-
 const router = express.Router();
+const generateRandomTask = require("../Generate/generator.js");
 
 router.get("/generate", async (req, res) => {
   try {
@@ -9,7 +8,7 @@ router.get("/generate", async (req, res) => {
     res.json(task);
   } catch (error) {
     console.error("Ошибка при генерации задания:", error);
-    res.status(500).json({ error: "Не удалось сгенерировать задание" });
+    res.status(500).json({ error: "Ошибка при генерации задания" });
   }
 });
 
