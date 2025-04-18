@@ -71,28 +71,12 @@ router.get("/books/count", async (req, res) => {
 
 router.get("/books", async (req, res) => {
   try {
-    const { id, author_like, title_like } = req.query;
-
-    if (id) {
-      const bookIds = id.split(",").map((id) => parseInt(id, 10));
-      if (bookIds.some((id) => isNaN(id))) {
-        return res.status(400).json({ error: "Invalid book ID(s)" });
-      }
-
-      const books = await SomeBook.findAll({
-        where: {
-          id: bookIds,
-        },
-      });
-
-      if (books.length === 0) {
-        return res.status(404).json({ error: "Книги не найдены" });
-      }
-
-      return res.json(books);
-    }
-
     const {
+      id,
+      id_notIn,
+      author_notLike,
+      title_notLike,
+      year_ne,
       author,
       genre,
       price,
@@ -107,6 +91,7 @@ router.get("/books", async (req, res) => {
 
     const filters = {};
 
+    // Добавляем фильтры по параметрам
     if (author) filters.author = author;
     if (genre) filters.genre = genre;
     if (price) filters.price = parseFloat(price);
@@ -120,13 +105,30 @@ router.get("/books", async (req, res) => {
       if (rating_lte) filters.rating[Op.lte] = parseFloat(rating_lte);
     }
 
-    // Добавляем фильтры по LIKE
-    if (author_like) {
-      filters.author = { [Op.like]: `%${author_like.trim()}%` };
+    // Логика для фильтрации по id_notIn
+    if (id_notIn) {
+      const ids = id_notIn.split(",").map((id) => parseInt(id, 10));
+      if (ids.some((id) => isNaN(id))) {
+        return res
+          .status(400)
+          .json({ error: "Invalid book ID(s) in 'id_notIn'" });
+      }
+      filters.id = { [Op.notIn]: ids };
     }
 
-    if (title_like) {
-      filters.title = { [Op.like]: `%${title_like.trim()}%` };
+    // Логика для фильтрации по author_notLike
+    if (author_notLike) {
+      filters.author = { [Op.notLike]: `%${author_notLike.trim()}%` };
+    }
+
+    // Логика для фильтрации по title_notLike
+    if (title_notLike) {
+      filters.title = { [Op.notLike]: `%${title_notLike.trim()}%` };
+    }
+
+    // Логика для фильтрации по year_ne
+    if (year_ne) {
+      filters.year = { [Op.ne]: parseInt(year_ne, 10) };
     }
 
     const order = [];
@@ -145,6 +147,10 @@ router.get("/books", async (req, res) => {
       where: filters,
       order: order,
     });
+
+    if (books.length === 0) {
+      return res.status(404).json({ error: "Книги не найдены" });
+    }
 
     res.json(books);
   } catch (error) {
