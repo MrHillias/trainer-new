@@ -76,6 +76,7 @@ router.get("/books", async (req, res) => {
       id_notIn,
       author_notLike,
       title_notLike,
+      genre_notLike,
       year_ne,
       author,
       genre,
