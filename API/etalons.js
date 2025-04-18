@@ -69,22 +69,19 @@ router.get("/books/count", async (req, res) => {
   }
 });
 
-// GET: Получить книгу по ID или все книги
 router.get("/books", async (req, res) => {
   try {
-    const { id } = req.query; // Параметр id из query string
+    const { id, author_like, title_like } = req.query;
 
     if (id) {
-      // Если передан параметр id, получаем книги по этим ID
-      const bookIds = id.split(",").map((id) => parseInt(id, 10)); // Разделяем строку на массив чисел
+      const bookIds = id.split(",").map((id) => parseInt(id, 10));
       if (bookIds.some((id) => isNaN(id))) {
         return res.status(400).json({ error: "Invalid book ID(s)" });
       }
 
-      // Ищем книги по множеству ID
       const books = await SomeBook.findAll({
         where: {
-          id: bookIds, // Используем оператор IN
+          id: bookIds,
         },
       });
 
@@ -92,10 +89,9 @@ router.get("/books", async (req, res) => {
         return res.status(404).json({ error: "Книги не найдены" });
       }
 
-      return res.json(books); // Отправляем книги в ответе
+      return res.json(books);
     }
 
-    // Если id нет, получаем все книги с фильтрами и сортировкой
     const {
       author,
       genre,
@@ -105,18 +101,17 @@ router.get("/books", async (req, res) => {
       rating_gte,
       rating_lte,
       language,
-      sortField, // Параметры сортировки
-      sortOrder, // Параметры сортировки
+      sortField,
+      sortOrder,
     } = req.query;
 
     const filters = {};
 
-    // Применяем фильтры
     if (author) filters.author = author;
     if (genre) filters.genre = genre;
-    if (price) filters.price = parseFloat(price); // Преобразуем в число
+    if (price) filters.price = parseFloat(price);
     if (availability) filters.availability = availability;
-    if (year) filters.year = parseInt(year, 10); // Преобразуем в целое число
+    if (year) filters.year = parseInt(year, 10);
     if (language) filters.language = language;
 
     if (rating_gte || rating_lte) {
@@ -125,7 +120,15 @@ router.get("/books", async (req, res) => {
       if (rating_lte) filters.rating[Op.lte] = parseFloat(rating_lte);
     }
 
-    // Проверка и настройка сортировки
+    // Добавляем фильтры по LIKE
+    if (author_like) {
+      filters.author = { [Op.like]: `%${author_like.trim()}%` };
+    }
+
+    if (title_like) {
+      filters.title = { [Op.like]: `%${title_like.trim()}%` };
+    }
+
     const order = [];
     if (sortField && sortOrder) {
       const validFields = ["title", "author", "price", "year", "rating"];
@@ -134,13 +137,13 @@ router.get("/books", async (req, res) => {
       if (validFields.includes(sortField) && validOrders.includes(sortOrder)) {
         order.push([sortField, sortOrder]);
       } else {
-        return res.status(400).json({ error: "Invalid sort parameters" }); // Возвращаем ошибку при неверных параметрах сортировки
+        return res.status(400).json({ error: "Invalid sort parameters" });
       }
     }
 
     const books = await SomeBook.findAll({
       where: filters,
-      order: order, // Добавляем сортировку в запрос
+      order: order,
     });
 
     res.json(books);
