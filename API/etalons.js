@@ -77,6 +77,7 @@ router.get("/books", async (req, res) => {
       author_notLike,
       title_notLike,
       genre_notLike,
+      price_notLike,
       year_ne,
       author,
       genre,
@@ -130,6 +131,11 @@ router.get("/books", async (req, res) => {
     // Логика для фильтрации по genre_notLike
     if (genre_notLike) {
       filters.genre = { [Op.notLike]: `%${genre_notLike.trim()}%` };
+    }
+
+    // Логика для фильтрации по price_notLike
+    if (price_notLike) {
+      filters.genre = { [Op.notLike]: `%${price_notLike.trim()}%` };
     }
 
     // Логика для фильтрации по year_ne
