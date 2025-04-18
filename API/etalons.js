@@ -126,6 +126,11 @@ router.get("/books", async (req, res) => {
       filters.title = { [Op.notLike]: `%${title_notLike.trim()}%` };
     }
 
+    // Логика для фильтрации по genre_notLike
+    if (genre_notLike) {
+      filters.genre = { [Op.notLike]: `%${genre_notLike.trim()}%` };
+    }
+
     // Логика для фильтрации по year_ne
     if (year_ne) {
       filters.year = { [Op.ne]: parseInt(year_ne, 10) };
