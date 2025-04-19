@@ -4,6 +4,7 @@
 /config/config.json
 /sequelize.log
 /Utils/etalonArrays.js
+/Utils/norwegianBookClubList.js
 
 # Директории с временными данными
 node_modules/
