@@ -89,6 +89,9 @@ router.get("/books", async (req, res) => {
       language,
       sortField,
       sortOrder,
+      patch_id,
+      field,
+      value,
     } = req.query;
 
     const filters = {};
@@ -155,16 +158,33 @@ router.get("/books", async (req, res) => {
       }
     }
 
-    const books = await SomeBook.findAll({
+    // Получаем все книги
+    const allBooks = await SomeBook.findAll({
       where: filters,
       order: order,
     });
 
-    if (books.length === 0) {
+    if (allBooks.length === 0) {
       return res.status(404).json({ error: "Книги не найдены" });
     }
 
-    res.json(books);
+    const updatedBooks = [];
+
+    // Если переданы параметры виртуального patch
+    if (patch_id && field && value !== undefined) {
+      const ids = patch_id.split(",").map((id) => parseInt(id, 10));
+      for (const book of allBooks) {
+        const bookData = book.toJSON();
+        if (ids.includes(bookData.id)) {
+          bookData[field] =
+            typeof bookData[field] === "number" ? Number(value) : value;
+        }
+        updatedBooks.push(bookData);
+      }
+      return res.json(updatedBooks);
+    }
+
+    res.json(allBooks);
   } catch (error) {
     console.error("Ошибка при получении книг:", error);
     res.status(500).json({ error: "Ошибка при получении данных о книгах" });
