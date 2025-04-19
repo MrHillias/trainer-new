@@ -6,6 +6,18 @@ const SomeBook = require("../Models/SomeBooks");
 const SomeFlight = require("../Models/SomeFlights");
 const SomeUser = require("../Models/SomeUsers");
 
+//API для симуляции добавления книги
+router.put("/books", async (req, res) => {
+  try {
+    const newBook = req.body;
+    // Валидировать newBook если нужно
+    res.json(newBook); // "Как бы" добавленная книга
+  } catch (error) {
+    console.error("Ошибка при симуляции PUT-запроса:", error);
+    res.status(500).json({ error: "Ошибка при симуляции PUT-запроса" });
+  }
+});
+
 // GET: Поиск книг по части строки (в авторе или названии)
 router.get("/books/search", async (req, res) => {
   try {
