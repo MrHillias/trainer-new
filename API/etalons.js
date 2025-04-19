@@ -44,8 +44,11 @@ router.put("/books", async (req, res) => {
       language,
     };
 
-    // Создаём "как бы" новый список
-    const simulatedList = [...SomeBook, newBook];
+    // Получаем список всех книг
+    const books = await SomeBook.findAll();
+
+    // "Как бы" добавляем новую книгу
+    const simulatedList = [...books.map((book) => book.toJSON()), newBook];
 
     res.json(simulatedList);
   } catch (error) {
