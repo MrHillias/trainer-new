@@ -20,6 +20,19 @@ router.put("/books", async (req, res) => {
       language,
     } = req.query;
 
+    if (
+      !title ||
+      !author ||
+      !genre ||
+      !price ||
+      !availability ||
+      !year ||
+      !rating ||
+      !language
+    ) {
+      return res.status(400).json({ error: "Отсутствуют обязательные поля" });
+    }
+
     const newBook = {
       title,
       author,
