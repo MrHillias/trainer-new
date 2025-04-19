@@ -6,11 +6,31 @@ const SomeBook = require("../Models/SomeBooks");
 const SomeFlight = require("../Models/SomeFlights");
 const SomeUser = require("../Models/SomeUsers");
 
-//API для симуляции добавления книги
+// Пример PUT-запроса через query-параметры
 router.put("/books", async (req, res) => {
   try {
-    const newBook = req.body;
-    // Валидировать newBook если нужно
+    const {
+      title,
+      author,
+      genre,
+      price,
+      availability,
+      year,
+      rating,
+      language,
+    } = req.query;
+
+    const newBook = {
+      title,
+      author,
+      genre,
+      price: parseFloat(price),
+      availability,
+      year: parseInt(year, 10),
+      rating: parseFloat(rating),
+      language,
+    };
+
     res.json(newBook); // "Как бы" добавленная книга
   } catch (error) {
     console.error("Ошибка при симуляции PUT-запроса:", error);
