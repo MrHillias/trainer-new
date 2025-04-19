@@ -34,6 +34,7 @@ router.put("/books", async (req, res) => {
     }
 
     const newBook = {
+      id: 43,
       title,
       author,
       genre,
