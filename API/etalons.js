@@ -44,7 +44,10 @@ router.put("/books", async (req, res) => {
       language,
     };
 
-    res.json(newBook); // "Как бы" добавленная книга
+    // Создаём "как бы" новый список
+    const simulatedList = [...SomeBook, newBook];
+
+    res.json(simulatedList);
   } catch (error) {
     console.error("Ошибка при симуляции PUT-запроса:", error);
     res.status(500).json({ error: "Ошибка при симуляции PUT-запроса" });
